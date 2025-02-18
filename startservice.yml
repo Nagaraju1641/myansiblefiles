@@ -1,0 +1,3 @@
+- name: start the servcie {{ src }}
+  service:
+    name: "{{ src }}"

@@ -1,0 +1,4 @@
+- name: task to copy content to config file
+  copy:
+    content: "{{ansible_fqdn}} has deployed web successfully"
+    dest: "{{ dest_path }}"
