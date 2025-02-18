@@ -1,0 +1,13 @@
+- name: add group and group
+  hosts: servers
+  tasks:
+    - name: create group
+      group: 
+        name: accgroup
+        state: present
+    - name: create user and add to group
+      ansible.builtin.user:
+        name: acc2
+        shell: /bin/sh
+        uid: 3031
+        groups: accgroup

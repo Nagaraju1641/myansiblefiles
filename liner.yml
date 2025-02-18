@@ -1,0 +1,9 @@
+- name: msg one liner
+  hosts: servers
+  tasks:
+    - name: apend a line 
+      lineinfile:
+        path: /etc/httpd/conf/httpd.conf
+        line: "#web servermanaging by -------ansible-------"
+        insertafter: EOF
+        state: present

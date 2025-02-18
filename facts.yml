@@ -1,0 +1,15 @@
+- name: getharing the info
+  hosts: servers
+  tasks:
+    - name: to collected the evidences 
+      setup:
+      register: hostinfo
+    - name: to debug  
+      debug:
+        msg:
+          - "The host FQDN is {{ hostinfo.ansible_facts.ansible_fqdn }}"
+          - "The IP address of the host is {{ hostinfo.ansible_facts.ansible_all_ipv4_addresses }}"
+          - "The OS distro is  {{ hostinfo.ansible_facts.ansible_distribution }}"
+          - "The OS version is {{ hostinfo.ansible_facts.ansible_os_family }}"
+        
+       

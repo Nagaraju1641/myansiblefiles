@@ -1,0 +1,24 @@
+- name: service check
+  hosts: servers
+  ignore_errors: yes
+  tasks:
+    - name: ssd service check
+      shell: systemctl status httpd.service
+      register: httpd_status
+    - name: debug status
+      debug:
+        var: httpd_status
+    - name: start the service if stoped state
+      shell: systemctl start httpd.service
+      when: "'inactive' in httpd_status.stdout"
+
+    - name: get systemd status of httpd
+      systemd:
+        name: httpd
+      register: current_status
+
+    - name: dispaly current status
+      debug: 
+        var: current_status
+
+

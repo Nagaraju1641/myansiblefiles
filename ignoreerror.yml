@@ -1,0 +1,18 @@
+- name: igonre error task
+  hosts: servers
+  ignore_errors: yes
+  tasks:
+    - name: install telnet
+      yum:
+        name: telnetuuu
+        state: present
+
+    - name: adding a user
+      user:
+        name: lakshmanarao
+        shell: /bin/bash
+
+    - name: start the service
+      service:
+        name: sssd
+        state: started

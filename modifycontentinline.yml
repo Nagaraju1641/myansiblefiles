@@ -1,0 +1,9 @@
+- name: modify coontent in line
+  hosts: servers
+  tasks:
+    - name: modifying line
+      lineinfile:
+        path: /etc/httpd/conf/httpd.conf
+        line: EnableSendfile no
+        regexp: "^EnableSendfile"
+        state: present

@@ -1,0 +1,7 @@
+- name: copy the files from src to dst
+  hosts: servers
+  tasks:
+    - name: copy file
+      copy:
+        src: tammana.txt
+        dest: /tmp/tammana.txt

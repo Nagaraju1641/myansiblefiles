@@ -1,0 +1,13 @@
+- name: getharing custome facts
+  hosts: servers
+  tasks:
+    - name: to coollect
+      debug:
+        msg:
+          - "The fact for custome: {{ ansible_local.cf.dept.env }}"
+
+    - name: deploy a dialog package
+      yum:
+        name: dialog
+        state: present
+      when: ansible_local.cf.dept.env == 'dev'

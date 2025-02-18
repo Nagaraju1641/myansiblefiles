@@ -1,0 +1,22 @@
+- name: httpd packate install
+  hosts: servers
+  tasks:
+    - name: httpd packge installed
+      package:
+        name: httpd
+        state: present
+
+    - name: create a home page
+      copy:
+        content: "Welcome to my maddd world"
+        dest: /var/www/html/index.html
+      notify: Handle restart https
+    
+
+
+  handlers:
+    - name: Handle restart https
+      service:
+        name: httpd
+        state: restarted
+        enabled: true

@@ -1,0 +1,9 @@
+- name: dialog
+  hosts: servers
+  tasks: 
+    - name: install dialog
+      yum:
+        name: dialog
+        state: installed
+
+

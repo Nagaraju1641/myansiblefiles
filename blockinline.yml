@@ -1,0 +1,10 @@
+- name: blockinfile test
+  hosts: servers
+  tasks: 
+    - name: blockinfile test
+      blockinfile:
+        path: /etc/motd
+        block: |
+          Firstline to add in /etc/motd
+          2nd line using block
+          marker: "<!--{mark} ANSIBLE MANAGED BLOCK--"

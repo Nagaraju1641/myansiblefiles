@@ -1,0 +1,27 @@
+- name: web server{{ Raja }} httpd packate install
+  hosts: servers
+  tasks:
+    - name: httpd packge installed {{ Raja }}
+      package:
+        name: "{{ Raja }}"
+        state: present
+
+    - name: service to start
+      service:
+        name: "{{ servicename }}"
+        state: started
+        enabled: true
+
+    - name: create a home page {{ hhtppath }}
+      copy:
+        content: "{{ webcontent }}"
+        dest: "{{ Rajapath }}/index.html"
+        mode: "0644"
+
+    - name: firewall
+      firewalld:
+        port: "{{ webport }}"
+        service: http
+        permanent: yes
+        state: enabled
+        immediate: yes

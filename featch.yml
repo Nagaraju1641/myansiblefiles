@@ -1,0 +1,8 @@
+- name: copy using copy module
+  hosts: servers
+  tasks: 
+    - name: copy from control node to managednodes
+      fetch: 
+        src: /home/student/df.output.txt
+        dest: "/home/student/{{ ansible_fqdn }}.df-output.txt"  #controllernode path
+        flat: yes

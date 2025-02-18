@@ -1,0 +1,16 @@
+- name: To create multiple users with loop
+  hosts: servers
+  vars:
+    users:
+      - naga1
+      - raja1
+  tasks: 
+    - name: create user
+      ansible.builtin.user:
+        name: "{{ item }}"
+        state: present 
+      loop: "{{ users }}"
+        
+
+
+        

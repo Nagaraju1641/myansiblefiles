@@ -1,0 +1,5 @@
+Raja: httpd
+servicename: httpd
+webcontent:  welcome to Raja world
+webport: 80/tcp 
+Rajapath: /var/www/html

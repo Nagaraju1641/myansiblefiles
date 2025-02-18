@@ -1,0 +1,16 @@
+- name: To display free -h
+  hosts: servers
+  tasks:
+    - name: free memory details
+      shell: free -h
+      register: output
+    - name: display in debugg mode
+      debug: 
+        #var: output
+        msg: free output {{ output.stdout }}
+    - name: out put saved to tmp
+      copy: 
+        content: "{{ output.stdout }}"
+        dest: /tmp/free.txt
+
+

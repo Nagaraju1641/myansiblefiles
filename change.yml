@@ -1,0 +1,10 @@
+- name: chaning
+  hosts: node1.example.com
+  tasks:
+    - name: executing the sh
+      command: useradd.sh
+      register: output
+      changed_when: "'user created successfully' in output.stdout"
+    - name: debug
+      debug:
+        var: output

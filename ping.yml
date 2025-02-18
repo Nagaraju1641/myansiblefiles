@@ -1,0 +1,6 @@
+- name: my 1st play book
+  hosts: db
+  tasks: 
+    - name: ping my server 
+      ping:
+   

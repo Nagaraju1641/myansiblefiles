@@ -1,0 +1,15 @@
+users:
+  - username: Tammananagaraju
+    comment: 1st user
+    shell: /bin/bash
+    password: Naga@123
+
+  - username: Vedamshika
+    comment: 2nd user
+    shell: /bin/sh
+    password: Veda@123
+
+  - username: mahalakshmi
+    comment: 3rd user
+    shell: /bin/sh
+    password: maha@123

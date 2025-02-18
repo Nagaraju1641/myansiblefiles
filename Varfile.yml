@@ -1,0 +1,10 @@
+- name: install file with varfile
+  hosts: servers
+  vars_files:
+    - varfile
+  tasks:
+    - name: install app
+      yum:
+        name: "{{ Raja }}"  
+        state: present 
+            

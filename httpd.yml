@@ -1,0 +1,32 @@
+- name: httpd packate install
+  hosts: servers
+  tasks:
+    - name: httpd packge installed
+      package:
+        name: httpd
+        state: present
+
+    - name: service to start
+      service:
+        name: httpd
+        state: started
+        enabled: true
+
+    - name: create a home page
+      copy:
+        content: "Welcome to my world"
+        dest: /var/www/html/index.html
+        mode: "0644"
+
+    - name: firewall
+      firewalld:
+        service: http
+        permanent: yes
+        state: enabled
+        immediate: yes
+
+    - name: check the connection
+      uri:
+        url: http://node1.example.com
+        return_content: yes
+        status_code: 200    

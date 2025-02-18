@@ -1,0 +1,13 @@
+- name: Install packate install
+  hosts: servers
+  tasks:
+    - name: " {{ Raja }} packge installed "
+      package:
+        name: "{{ Raja }}"
+        state: present
+
+    - name: service to start
+      service:
+        name: "{{ Raja }}"
+        state: started
+        enabled: true

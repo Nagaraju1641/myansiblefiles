@@ -1,0 +1,13 @@
+- name: ansible built module fact
+  hosts: servers
+  tasks:
+    - name: ansible build service 
+      ansible.builtin.service_facts:
+      register: service_data
+
+    - name: start the sevice if it is inactive 
+      service:
+        name: httpd
+        state: restart
+      when: ansible_facts['services']['httpd.service']['state'] == "intactive"
+

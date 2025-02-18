@@ -1,0 +1,8 @@
+- name: check the availanle memory ram
+  hosts: servers
+  gather_facts: yes
+  tasks: 
+    - name: checke the available ram
+      debug: 
+        msg: :Available RAM {{ ansible_memfree_mb }} MB"
+      failed_when: ansible_memfree_mb < 4096
