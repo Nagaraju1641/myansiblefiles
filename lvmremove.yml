@@ -1,0 +1,36 @@
+---
+- name: Remove LVM
+  hosts: node1.example.com
+  become: yes
+
+  vars:
+    disk: /dev/sdb
+    vg_name: nagaraju
+    lvms:
+      - { name: lv1, mountpoint: /raja1 }
+      - { name: lv2, mountpoint: /raja2 }
+
+  tasks:
+  - name: Umount logical volume
+    mount:
+      path: "{{ item.mountpoint }}"
+      state: unmounted
+    loop: "{{ lvms }}"
+
+  - name: Remove fstab entry
+    lineinfile:
+      dest: /etc/fstab
+      line: "/dev/mapper/{{ vg_name }}-{{ item.name }} {{ item.mountpoint }} *"
+      state: absent
+    loop: "{{ lvms }}"
+ 
+  - name: Remove logical volume
+    shell: "lvremove -f {{ vg_name }}/{{ item.name }}"
+    loop: "{{ lvms }}"
+
+
+  - name: Remove volume group
+    shell: "vgremove -f {{ vg_name }}"
+
+  - name: Remove physical volume
+    shell: "pvremove -f {{ disk }}"
