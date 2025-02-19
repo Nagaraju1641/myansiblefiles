@@ -1,0 +1,49 @@
+---
+- name: Create a partition in the disk
+  hosts: node1.example.com
+  vars: 
+    file_path:
+      - path: "/salesdata"
+        size: "1GiB"
+        filetype: "ext4"
+        num: "1"
+      - path: "/proddata"
+        size: "3GiB"
+        filetype: "xfs"
+        num: "2"
+  tasks: 
+    - name: Create a partition in the disk
+      community.general.parted:
+        device: /dev/sdb
+        number: 1
+        state: present
+        part_end: 2GiB
+
+    - name: Create a partition in the disk
+      community.general.parted:
+        device: /dev/sdb
+        number: 2
+        state: present
+        part_start: 2GiB
+        part_end: 5GiB
+
+    - name: Create filesystem
+      filesystem:
+        fstype: "{{ item.filetype }}"
+        dev: "/dev/sdb{{ item.num }}"
+        force: yes
+      loop: "{{ file_path }}"
+
+    - name: Ceate the folders
+      file: 
+        path: "{{ item.path }}"
+        state: directory  
+      loop: "{{ file_path }}"
+
+    - name: Mount filesystem
+      mount:
+       path: "{{ item.path }}"
+       src: "/dev/sdb{{ item.num }}"
+       fstype: "{{ item.filetype }}"
+       state: mounted
+      loop: "{{ file_path }}"

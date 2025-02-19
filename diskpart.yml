@@ -1,0 +1,62 @@
+- name: create partitiaon and mount append FSTAB entry
+  hosts: node1.example.com
+  tasks:
+    - name: partition creation
+      community.general.parted:
+        device: /dev/sdb
+        number: 1
+        part_start: "1MiB"
+        part_end: "2GiB"
+        state: present
+
+    - name: formate the partition ext4
+      filesystem:
+        dev: /dev/sdb1
+        type: ext4
+
+    - name: create 2nd partition
+      community.general.parted:
+        device: /dev/sdb
+        number: 2
+        part_start: "2GiB"
+        part_end: "4GiB"
+
+
+    - name: formate w2nd partition with xfs
+      filesystem:
+        dev: /dev/sdb
+        type: xfs
+
+        
+    - name: create a directory 
+      file:
+        path: "{{ item }}"
+        state: directory
+      loop:
+        - /raja
+        - /tammana
+
+    - name: mount partiiton 1
+      mount:
+        path: /raja
+        src: /dev/sdb1
+        fstype: ext4
+        state: mounted
+
+    - name: mount partiiton 2
+      mount:
+        path: /tammana
+        src: /dev/sdb2
+        fstype: xfs
+        state: mounted
+
+
+    - name: fstab entry
+      lineinfile:
+        dest: /etc/fstab
+        line: "{{ line }}"
+        state: present
+      loop:
+        - "/dev/sdb1 /raja ext4 defaults 0 0"
+        - "/dev/sdb2 /tammana xfs defaults 0 0"
+
