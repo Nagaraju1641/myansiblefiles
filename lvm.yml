@@ -1,0 +1,49 @@
+---
+- name: Create LVM
+  hosts: node1.example.com
+  become: yes
+
+  vars:
+    disk: /dev/sdb
+    vg_name: nagaraju
+    lvms:
+      - { name: lv1, size: 3G, mountpoint: /raja1, fstype: xfs }
+      - { name: lv2, size: 3G, mountpoint: /raja2, fstype: xfs }
+
+  tasks:
+  - name: Create physical volume
+    shell: "pvcreate {{ disk }}"
+
+  - name: Create volume group
+    shell: "vgcreate {{ vg_name }} {{ disk }}"
+
+  - name: Create logical volume
+    shell: "lvcreate -y -L +{{ item.size }} -n {{ item.name }} {{ vg_name }}"
+    loop: "{{ lvms }}"
+
+  - name: Format logical volume
+    filesystem:
+      dev: "/dev/mapper/{{ vg_name }}-{{ item.name }}"
+      fstype: "{{ item.fstype }}"
+    loop: "{{ lvms }}"
+
+  - name: Create mount point
+    file:
+      path: "{{ item.mountpoint }}"
+      state: directory
+    loop: "{{ lvms }}"
+
+  - name: Mount logical volume
+    mount:
+      path: "{{ item.mountpoint }}"
+      src: "/dev/mapper/{{ vg_name }}-{{ item.name }}"
+      fstype: "{{ item.fstype }}"
+      state: mounted
+    loop: "{{ lvms }}"
+
+  - name: Append fstab entry
+    lineinfile:
+      dest: /etc/fstab
+      line: "/dev/mapper/{{ vg_name }}-{{ item.name }} {{ item.mountpoint }} {{ item.fstype }} defaults 0 0"
+      state: present
+    loop: "{{ lvms }}"
