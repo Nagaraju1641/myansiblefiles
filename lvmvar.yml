@@ -1,0 +1,13 @@
+lvms:
+  - name: lv1
+    vg_name: vg1
+    pv_device: /dev/sdb
+    size: 2G
+    mountpoint: /mnt/lv1
+    fstype: ext4
+  - name: lv2
+    vg_name: vg2
+    pv_device: /dev/sdb
+    size: 3G
+    mountpoint: /mnt/lv2
+    fstype: xfs
