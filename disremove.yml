@@ -1,0 +1,22 @@
+- name: create a partition
+  hosts: node1.example.com
+  tasks:
+    - name: umount salesdata
+      mount: 
+        path: /salesdata
+        src: /dev/sdb1
+        state: absent #will remove /etc/fstab entry
+    - name: get device info /dev/sdb 
+      parted:
+        device: /dev/sdb 
+        unit: GiB
+      register: sdb_info
+    - name: debug sdb info
+      debug:
+        var: sdb_info
+    - name: remove all partitions
+      parted: 
+        device: /dev/sdb 
+        number: "{{ item.num }}"
+        state: absent
+    loop: "{{ sdb_info.partitons }}"
